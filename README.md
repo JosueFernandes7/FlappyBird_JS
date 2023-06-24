@@ -1,4 +1,4 @@
 # flappy-bird-assets
 
 Assets to develop the Flappy Bird Game
-# FlappyBird_JS
+# [Assets utilizados](https://github.com/samuelcust/flappy-bird-assets/tree/master)
