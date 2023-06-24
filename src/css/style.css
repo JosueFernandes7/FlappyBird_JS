@@ -7,6 +7,21 @@
   margin: 0 auto;
   overflow: hidden
 }
+.gameBird {
+  position: absolute;
+  width: 34px;
+  height: 24px;
+  background-image: url(../assets/images/bluebird-midflap.png);
+  top: 50%;
+  left: 20px;
+  transform: translate(0,50%);
+}
+.birdUp {
+  background-image: url(../assets/images/bluebird-upflap.png);
+}
+.birdDown {
+  background-image: url(../assets/images/bluebird-downflap.png);
+}
 .gameBase {
   position: absolute;
   bottom: -160px;
