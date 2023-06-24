@@ -1,0 +1,20 @@
+.gameBoard {
+  position: relative;
+  width: 330px;
+  height: 500px;
+  background-image: url(../assets/images/background-day.png);
+  border: 2px solid;
+  margin: 0 auto;
+  overflow: hidden
+}
+.gameBase {
+  position: absolute;
+  bottom: -160px;
+  width: 660px;
+  animation: moveBase 1.5s infinite linear;
+}
+@keyframes moveBase{
+  to {
+    transform: translateX(-330px);
+  }
+}
