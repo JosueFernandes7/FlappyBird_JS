@@ -67,7 +67,7 @@ audio {
   position: absolute;
   bottom: -160px;
   width: 660px;
-  z-index: 0;
+  z-index: 2;
 }
 .baseMov {
   animation: moveBase 2s infinite linear;
@@ -82,7 +82,7 @@ audio {
   right: -60px;
   /* left: 50px; */
   bottom: -80px;
-  z-index: 3;
+  z-index: 1;
   animation: 3s movePipe infinite linear;
 }
 @keyframes default{
