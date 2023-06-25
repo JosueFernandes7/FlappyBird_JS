@@ -5,6 +5,12 @@ const start = document.querySelector('.start')
 const gameOver = document.querySelector('.gameOver')
 const gameBase = document.querySelector('.gameBase')
 
+const backgroundAudio = document.querySelectorAll('audio')[0];
+const pointAudio = document.querySelectorAll('audio')[1];
+const dieAudio = document.querySelectorAll('audio')[2];
+
+backgroundAudio.volume = .5
+
 const board = gameBoard.getBoundingClientRect()
 let birdSetting = bird.getBoundingClientRect()
 let posicaoAtual = bird.getBoundingClientRect().bottom
@@ -30,6 +36,7 @@ function startGame() {
     gameBoard.children[5].remove()
 
   }
+  backgroundAudio.play()
   toggleGameBase()
   updatePoints()
   birdWingMovement()
@@ -38,6 +45,7 @@ function startGame() {
   start.removeEventListener('click', startGame)
 }
 function endGame() {
+  backgroundAudio.pause()
   toggleGameBase()
   gameBoard.removeEventListener('click', jump)
   gameOver.style.display = "block"
@@ -78,12 +86,14 @@ function checkColision(pipe) {
   } else if (verifyWidth) {
     pontuacao++;
     updatePoints()
+    pointAudio.play()
     clearInterval(monitorTimer)
   }
 
   if (colidiu) {
     clearInterval(pipeTimer)
     clearInterval(monitorTimer)
+    dieAudio.play()
     endGame()
     pipe.style.right = '195px'
     pipe.style.animation = 'none'
