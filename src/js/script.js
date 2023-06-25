@@ -47,6 +47,7 @@ function startGame() {
 function endGame() {
   backgroundAudio.pause()
   toggleGameBase()
+  clearInterval(timer)
   gameBoard.removeEventListener('click', jump)
   gameOver.style.display = "block"
   setTimeout(() => {
@@ -89,7 +90,6 @@ function checkColision(pipe) {
     pointAudio.play()
     clearInterval(monitorTimer)
   }
-
   if (colidiu) {
     clearInterval(pipeTimer)
     clearInterval(monitorTimer)
