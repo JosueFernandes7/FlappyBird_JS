@@ -9,7 +9,7 @@
   background-image: url(../assets/images/background-day.png);
   border: 2px solid;
   margin: 0 auto;
-  overflow: hidden
+  /* overflow: hidden */
 }
 .gameBird {
   position: absolute;
@@ -17,7 +17,7 @@
   height: 24px;
   background-image: url(../assets/images/bluebird-midflap.png);
   bottom: 50%;
-  left: 20px;
+  left: 50px;
   transform: translate(0,50%);
   transition: bottom 0.5s linear;
 }
@@ -31,10 +31,30 @@
   position: absolute;
   bottom: -160px;
   width: 660px;
-  animation: moveBase 1.5s infinite linear;
+  animation: moveBase 2s infinite linear;
+  z-index: 2;
 }
 @keyframes moveBase{
   to {
     transform: translateX(-330px);
+  }
+}
+.pipe {
+  position: absolute;
+  right: -60px;
+  /* left: 50px; */
+  bottom: -80px;
+  z-index: 3;
+  animation: 3s movePipe infinite linear;
+}
+@keyframes default{
+  to {
+    left: auto;
+  }
+}
+@keyframes movePipe {
+  to {
+    transform: translateX(-450px);
+    /* transform: translateX(-500px); */
   }
 }
