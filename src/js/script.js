@@ -1,5 +1,9 @@
 const bird = document.querySelector('.gameBird')
 const gameBoard = document.querySelector('.gameBoard')
+const pontuacaoBoard = document.querySelector('.pontuacao')
+const start = document.querySelector('.start')
+const gameOver = document.querySelector('.gameOver')
+const gameBase = document.querySelector('.gameBase')
 
 const board = gameBoard.getBoundingClientRect()
 let birdSetting = bird.getBoundingClientRect()
@@ -14,11 +18,38 @@ let timer = null
 let i = 0
 
 
+start.addEventListener('click', startGame)
 
-gameBoard.addEventListener('click', jump)
+function toggleGameBase() {
+  gameBase.classList.toggle("baseMov")
+}
+function startGame() {
+  gameBoard.addEventListener('click', jump)
+  pontuacao = 0;
+  if (gameBoard.children[5]) {
+    gameBoard.children[5].remove()
 
-birdWingMovement()
-handleGame()
+  }
+  toggleGameBase()
+  updatePoints()
+  birdWingMovement()
+  handleGame()
+  start.style.display = 'none'
+  start.removeEventListener('click', startGame)
+}
+function endGame() {
+  toggleGameBase()
+  gameBoard.removeEventListener('click', jump)
+  gameOver.style.display = "block"
+  setTimeout(() => {
+    start.addEventListener('click', startGame);
+    gameOver.style.display = "none"
+    start.style.display = 'block'
+  }, 3000)
+
+}
+// birdWingMovement()
+// handleGame()
 function handleGame() {
   // zera os timers
   pipeTimer = setInterval(() => {
@@ -38,27 +69,32 @@ function checkColision(pipe) {
   birdSetting = bird.getBoundingClientRect()
   let colidiu = false;
 
-  const verifyHeight =  birdSetting.top+birdSetting.height >= pipeSettings.top;
-  const verifyWidth = pipeSettings.left + pipeSettings.width + birdSetting.width <= birdSetting.left 
+  const verifyHeight = birdSetting.top + birdSetting.height >= pipeSettings.top;
+  const verifyWidth = pipeSettings.left + pipeSettings.width + birdSetting.width <= birdSetting.left
+  const verifyWidthWithoutPipe = pipeSettings.left <= birdSetting.left + birdSetting.width
 
-  if(verifyWidth && verifyHeight) {
+  if (verifyWidthWithoutPipe && verifyHeight) {
     colidiu = true
   } else if (verifyWidth) {
     pontuacao++;
+    updatePoints()
     clearInterval(monitorTimer)
   }
 
   if (colidiu) {
-    pipe.style.right = '195px'
-    pipe.style.animation = 'none'
     clearInterval(pipeTimer)
     clearInterval(monitorTimer)
+    endGame()
+    pipe.style.right = '195px'
+    pipe.style.animation = 'none'
   }
 }
-
+function updatePoints() {
+  pontuacaoBoard.innerHTML = pontuacao
+}
 function deletePipeIfExists() {
-  if (gameBoard.children[2]) {
-    gameBoard.children[2].remove()
+  if (gameBoard.children[5]) {
+    gameBoard.children[5].remove()
   }
 }
 function createPipe() {

@@ -9,7 +9,40 @@
   background-image: url(../assets/images/background-day.png);
   border: 2px solid;
   margin: 0 auto;
-  /* overflow: hidden */
+  overflow: hidden
+}
+.gameOver {
+  background-image: url(../assets/images/gameover.png);
+  background-repeat: no-repeat;
+  display: none;
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  cursor: pointer;
+  z-index: 1000;
+}
+.start {
+  background-image: url(../assets/images/message.png);
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+  cursor: pointer;
+  z-index: 1000;
+}
+.pontuacao {
+  position: absolute;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  font-size: 50px;
+  left: 50%;
+  transform: translate(-50%);
 }
 .gameBird {
   position: absolute;
@@ -31,8 +64,10 @@
   position: absolute;
   bottom: -160px;
   width: 660px;
+  z-index: 0;
+}
+.baseMov {
   animation: moveBase 2s infinite linear;
-  z-index: 2;
 }
 @keyframes moveBase{
   to {
