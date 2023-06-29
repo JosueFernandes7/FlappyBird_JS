@@ -53,6 +53,7 @@ audio {
   height: 24px;
   background-image: url(../assets/images/bluebird-midflap.png);
   bottom: 50%;
+  bottom: 300px;
   left: 50px;
   transform: translate(0,50%);
   transition: bottom 0.5s linear;
@@ -80,10 +81,18 @@ audio {
 .pipe {
   position: absolute;
   right: -60px;
-  /* left: 50px; */
-  bottom: -80px;
+  bottom: -135.5px;
+  bottom: -10px;
   z-index: 1;
   animation: 3s movePipe infinite linear;
+}
+.pipeTop {
+  position: absolute;
+  right: -60px;
+  z-index: 1;
+  top: -135.5px;
+  transform: rotate(180deg);
+  animation: 3s movePipe2 infinite linear;
 }
 @keyframes default{
   to {
@@ -93,6 +102,10 @@ audio {
 @keyframes movePipe {
   to {
     transform: translateX(-450px);
-    /* transform: translateX(-500px); */
+  }
+}
+@keyframes movePipe2 {
+  to {
+    transform: translateX(-450px) rotate(180deg);
   }
 }

@@ -30,21 +30,21 @@ function toggleGameBase() {
   gameBase.classList.toggle("baseMov")
 }
 function startGame() {
+  // bird.style.animation = 'none'
   gameBoard.addEventListener('click', jump)
   pontuacao = 0;
-  if (gameBoard.children[5]) {
-    gameBoard.children[5].remove()
-
-  }
+  cleanBoard()
   backgroundAudio.play()
   toggleGameBase()
   updatePoints()
   birdWingMovement()
   handleGame()
   start.style.display = 'none'
-  start.removeEventListener('click', startGame)
+
 }
 function endGame() {
+  clearInterval(downTimer)
+  start.removeEventListener('click', startGame)
   backgroundAudio.pause()
   toggleGameBase()
   clearInterval(timer)
@@ -57,32 +57,49 @@ function endGame() {
   }, 3000)
 
 }
-// birdWingMovement()
-// handleGame()
+function pipeAleatPosition(pipe,pipeTop) {
+
+  let aleatNum = Math.random() * 135;
+  const GAP = 220;
+  let i = Math.round(Math.random())
+
+  if(i) {
+    pipe.style.bottom = `${-aleatNum}px`
+    pipeTop.style.top = `${-GAP - aleatNum}px`
+  } else {
+    pipeTop.style.top = `${-aleatNum}`
+    pipe.style.bottom = `${-GAP-aleatNum}px`
+  }
+}
 function handleGame() {
   // zera os timers
   pipeTimer = setInterval(() => {
     clearInterval(monitorTimer)
-    deletePipeIfExists()
-    const gamePipe = createPipe();
-    gameBoard.append(gamePipe)
+    cleanBoard()
+    const [gamePipe,gamePipeTop] = createPipes();
+    gameBoard.append(gamePipe, gamePipeTop)
+    pipeAleatPosition(gamePipe,gamePipeTop)
     monitorTimer = setInterval(() => {
-      const pipe = document.querySelector('.pipe');
-      checkColision(pipe)
-    }, 50) // monitora a cada 100ms
+      // const pipe = document.querySelector('.pipe');
+      // const pipeTop = document.querySelector('.pipeTop');
+      checkColision(gamePipe,gamePipeTop)
+    }, 50) // monitora a cada 50ms
   }, 3000)
 }
-
-function checkColision(pipe) {
+function checkColision(pipe,pipeTop) {
   const pipeSettings = pipe.getBoundingClientRect();
+  const pipeTopSettings = pipeTop.getBoundingClientRect();
   birdSetting = bird.getBoundingClientRect()
   let colidiu = false;
 
-  const verifyHeight = birdSetting.top + birdSetting.height >= pipeSettings.top;
   const verifyWidth = pipeSettings.left + pipeSettings.width + birdSetting.width <= birdSetting.left
+  const verifyHeight = birdSetting.top + birdSetting.height >= pipeSettings.top;
   const verifyWidthWithoutPipe = pipeSettings.left <= birdSetting.left + birdSetting.width
 
-  if (verifyWidthWithoutPipe && verifyHeight) {
+  const verifyTopHeight = birdSetting.bottom - birdSetting.height <= pipeTopSettings.bottom - 4;
+
+  
+  if (verifyWidthWithoutPipe && (verifyHeight || verifyTopHeight)) {
     colidiu = true
   } else if (verifyWidth) {
     pontuacao++;
@@ -97,21 +114,32 @@ function checkColision(pipe) {
     endGame()
     pipe.style.right = '195px'
     pipe.style.animation = 'none'
+    
+    pipeTop.style.right = '195px'
+    pipeTop.style.animation = 'none'
+
+    bird.style.bottom = '80px'
+  }
+
+}
+function cleanBoard() {
+  if(gameBoard.querySelectorAll('.pipe') && gameBoard.querySelector('.pipeTop')) {
+    gameBoard.querySelector('.pipe').remove()
+    gameBoard.querySelector('.pipeTop').remove()
   }
 }
 function updatePoints() {
   pontuacaoBoard.innerHTML = pontuacao
 }
-function deletePipeIfExists() {
-  if (gameBoard.children[5]) {
-    gameBoard.children[5].remove()
-  }
-}
-function createPipe() {
+function createPipes() {
   let gamePipe = document.createElement('img');
   gamePipe.src = "src/assets/images/pipe-green.png"
   gamePipe.classList.add("pipe")
-  return gamePipe;
+
+  let gamePipeTop = document.createElement('img');
+  gamePipeTop.src = "src/assets/images/pipe-green.png"
+  gamePipeTop.classList.add('pipeTop')
+  return [gamePipe, gamePipeTop];
 }
 
 function jump() {
@@ -120,7 +148,6 @@ function jump() {
 
   // Calcula a nova posição com base na posição atual e no salto
   let novaPosicao = posicaoAtual + salto
-
   if (novaPosicao >= board.height) {
     novaPosicao = board.height - birdSetting.height / 2
   }
@@ -148,7 +175,6 @@ function downMovement() {
 }
 function birdWingMovement() {
   timer = setInterval(() => {
-    // bird.classList.remove(...["birdUp", "birdDown"])
     if (i % 2 == 0) {
       bird.style.backgroundImage = "url(src/assets/images/bluebird-upflap.png)"
     } else {
