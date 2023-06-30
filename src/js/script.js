@@ -17,6 +17,7 @@ let posicaoAtual = bird.getBoundingClientRect().bottom
 let perdeu = false;
 let pontuacao = 0;
 
+let backgroundTimer = null;
 let pipeTimer = null
 let monitorTimer = null
 let downTimer = null
@@ -30,7 +31,6 @@ function toggleGameBase() {
   gameBase.classList.toggle("baseMov")
 }
 function startGame() {
-  // bird.style.animation = 'none'
   gameBoard.addEventListener('click', jump)
   pontuacao = 0;
   cleanBoard()
@@ -38,12 +38,14 @@ function startGame() {
   toggleGameBase()
   updatePoints()
   birdWingMovement()
+  handleBackground()
   handleGame()
   start.style.display = 'none'
 
 }
 function endGame() {
   clearInterval(downTimer)
+  clearInterval(backgroundTimer);
   start.removeEventListener('click', startGame)
   backgroundAudio.pause()
   toggleGameBase()
@@ -57,36 +59,28 @@ function endGame() {
   }, 3000)
 
 }
-function pipeAleatPosition(pipe,pipeTop) {
-
-  let aleatNum = Math.random() * 135;
-  const GAP = 220;
-  let i = Math.round(Math.random())
-
-  if(i) {
-    pipe.style.bottom = `${-aleatNum}px`
-    pipeTop.style.top = `${-GAP - aleatNum}px`
-  } else {
-    pipeTop.style.top = `${-aleatNum}`
-    pipe.style.bottom = `${-GAP-aleatNum}px`
-  }
+function pipeAleatPosition(pipe, pipeTop) {
+  const alturaPipe = 320;
+  const GAP = 135.5;
+  pipeTop.style.top = `${-Math.random() * 290}px`
+  const distanciaPipeBaixo = +getComputedStyle(document.querySelector('.pipeTop')).top.replace('px', '') + GAP + alturaPipe;
+  pipe.style.top = `${distanciaPipeBaixo}px`
 }
 function handleGame() {
   // zera os timers
   pipeTimer = setInterval(() => {
     clearInterval(monitorTimer)
     cleanBoard()
-    const [gamePipe,gamePipeTop] = createPipes();
+    const [gamePipe, gamePipeTop] = createPipes();
     gameBoard.append(gamePipe, gamePipeTop)
-    pipeAleatPosition(gamePipe,gamePipeTop)
+    pipeAleatPosition(gamePipe, gamePipeTop)
+
     monitorTimer = setInterval(() => {
-      // const pipe = document.querySelector('.pipe');
-      // const pipeTop = document.querySelector('.pipeTop');
-      checkColision(gamePipe,gamePipeTop)
+      checkColision(gamePipe, gamePipeTop)
     }, 50) // monitora a cada 50ms
   }, 3000)
 }
-function checkColision(pipe,pipeTop) {
+function checkColision(pipe, pipeTop) {
   const pipeSettings = pipe.getBoundingClientRect();
   const pipeTopSettings = pipeTop.getBoundingClientRect();
   birdSetting = bird.getBoundingClientRect()
@@ -98,7 +92,7 @@ function checkColision(pipe,pipeTop) {
 
   const verifyTopHeight = birdSetting.bottom - birdSetting.height <= pipeTopSettings.bottom - 4;
 
-  
+
   if (verifyWidthWithoutPipe && (verifyHeight || verifyTopHeight)) {
     colidiu = true
   } else if (verifyWidth) {
@@ -114,7 +108,7 @@ function checkColision(pipe,pipeTop) {
     endGame()
     pipe.style.right = '195px'
     pipe.style.animation = 'none'
-    
+
     pipeTop.style.right = '195px'
     pipeTop.style.animation = 'none'
 
@@ -123,7 +117,7 @@ function checkColision(pipe,pipeTop) {
 
 }
 function cleanBoard() {
-  if(gameBoard.querySelectorAll('.pipe') && gameBoard.querySelector('.pipeTop')) {
+  if (gameBoard.querySelectorAll('.pipe') && gameBoard.querySelector('.pipeTop')) {
     gameBoard.querySelector('.pipe').remove()
     gameBoard.querySelector('.pipeTop').remove()
   }
@@ -182,4 +176,16 @@ function birdWingMovement() {
     }
     i++;
   }, 300)
+}
+
+function handleBackground() {
+  let i = 0;
+  backgroundTimer = setInterval(() => {
+    if (i % 2 == 0) {
+      gameBoard.style.backgroundImage = "url(src/assets/images/background-day.png"
+    } else {
+      gameBoard.style.backgroundImage = "url(src/assets/images/background-night.png"
+    }
+    i++
+  }, 15 * 1000) // a cada um minuto troca o background
 }

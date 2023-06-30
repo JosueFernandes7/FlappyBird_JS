@@ -81,8 +81,7 @@ audio {
 .pipe {
   position: absolute;
   right: -60px;
-  bottom: -135.5px;
-  bottom: -10px;
+  top: 0;
   z-index: 1;
   animation: 3s movePipe infinite linear;
 }
@@ -90,7 +89,7 @@ audio {
   position: absolute;
   right: -60px;
   z-index: 1;
-  top: -135.5px;
+  top: -290px;
   transform: rotate(180deg);
   animation: 3s movePipe2 infinite linear;
 }
