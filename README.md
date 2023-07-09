@@ -1,6 +1,6 @@
 # Flappy Bird
 
-Réplica do jogo Flappy Bird feito com Javascript Puro
+Réplica do jogo Flappy Bird feito com Javascript Puro (sem `Canvas`)
 
 
 [Acesse o jogo completo aqui](https://josuefernandes7.github.io/FlappyBird_JS/)
